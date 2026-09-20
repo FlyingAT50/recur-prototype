@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>Recur dealer prototype</title>
+  <style>html,body{margin:0;background:#fff}body{padding:16px;box-sizing:border-box}</style>
+  <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
+</head>
+<body>
+<div id="recur-dealer" aria-label="Recur dealer workspace concept">
+  <style>
+    #recur-dealer {
+      --d-ink: light-dark(#111111, #f7f7f7);
+      --d-sub: light-dark(#666666, #b8b8b8);
+      --d-bg: light-dark(#ffffff, #171717);
+      --d-shell: light-dark(#ffffff, #171717);
+      --d-card: light-dark(#ffffff, #212121);
+      --d-line: light-dark(#e6e6e6, #363636);
+      --d-soft: light-dark(#f7f7f7, #292929);
+      --d-pink: #f4a7c0;
+      --d-green: light-dark(#0e7a49, #80d8aa);
+      --d-amber: light-dark(#986018, #f0bd70);
+      width: 100%; color: var(--d-ink); font-family: Inter, ui-sans-serif, system-ui, -apple-system, sans-serif; font-weight: 400;
+    }
+    #recur-dealer * { box-sizing: border-box; }
+    #recur-dealer button, #recur-dealer input, #recur-dealer select, #recur-dealer textarea { font: inherit; }
+    #recur-dealer .app { background: var(--d-bg); border: 1px solid var(--d-line); border-radius: 20px; overflow: hidden; min-height: 720px; display: grid; grid-template-columns: 224px 1fr; }
+    #recur-dealer .sidebar { background: var(--d-shell); border-right: 1px solid var(--d-line); padding: 24px 17px; display: flex; flex-direction: column; gap: 23px; }
+    #recur-dealer .brand { font-size: 28px; letter-spacing: -1.6px; font-weight: 600; line-height: 1; }
+    #recur-dealer .brand-r { display: inline-block; transform: scaleX(-1); margin-right: 1px; }
+    #recur-dealer .dealer-label { color: var(--d-sub); font-size: 11px; letter-spacing: 1.4px; text-transform: uppercase; margin-top: 8px; }
+    #recur-dealer .nav { display: grid; gap: 8px; }
+    #recur-dealer .nav button { border: 0; background: transparent; color: var(--d-sub); min-height: 54px; border-radius: 12px; padding: 8px 10px; display: grid; grid-template-columns: 36px 1fr; align-items: center; gap: 10px; text-align: left; }
+    #recur-dealer .nav button.active { background: color-mix(in srgb, var(--d-pink) 34%, var(--d-card)); color: var(--d-ink); }
+    #recur-dealer .nav-icon { width: 36px; height: 36px; border-radius: 11px; display: grid; place-items: center; background: var(--d-soft); }
+    #recur-dealer .nav button.active .nav-icon { background: var(--d-pink); color: #111111; }
+    #recur-dealer .nav svg { width: 20px; height: 20px; stroke-width: 2.4; }
+    #recur-dealer .nav strong { font-size: 13px; font-weight: 600; }
+    #recur-dealer .dealer-id { margin-top: auto; border-top: 1px solid var(--d-line); padding-top: 16px; }
+    #recur-dealer .dealer-id strong { font-size: 13px; font-weight: 600; display: block; }
+    #recur-dealer .dealer-id small { color: var(--d-sub); font-size: 11px; }
+    #recur-dealer .main { padding: 25px 30px 38px; min-width: 0; }
+    #recur-dealer .topbar { display: flex; justify-content: space-between; align-items: center; gap: 18px; margin-bottom: 23px; }
+    #recur-dealer .eyebrow { color: var(--d-sub); font-size: 12px; margin-bottom: 3px; }
+    #recur-dealer h1 { font-size: 28px; line-height: 1.1; letter-spacing: -.9px; font-weight: 600; margin: 0; }
+    #recur-dealer h2 { font-size: 15px; font-weight: 600; margin: 0 0 14px; }
+    #recur-dealer .search { width: 275px; position: relative; }
+    #recur-dealer .search input { width: 100%; border: 1px solid var(--d-line); background: var(--d-card); color: var(--d-ink); border-radius: 13px; padding: 12px 14px 12px 41px; }
+    #recur-dealer .search svg { position: absolute; left: 14px; top: 13px; width: 18px; height: 18px; color: var(--d-sub); }
+    #recur-dealer .panel { display: none; }
+    #recur-dealer .panel.active { display: block; }
+    #recur-dealer .vehicle { background: var(--d-pink); color: #100820; border-radius: 16px; padding: 18px 22px; display: flex; justify-content: space-between; gap: 24px; align-items: center; }
+    #recur-dealer .vehicle-info { display: flex; gap: 15px; align-items: center; }
+    #recur-dealer .bike-photo { width: 178px; height: 96px; border-radius: 12px; object-fit: contain; background: light-dark(#ffffff, #212121); padding: 5px; flex: 0 0 auto; }
+    #recur-dealer .vehicle h2 { margin: 0 0 4px; font-size: 19px; }
+    #recur-dealer .vehicle small { font-size: 12px; }
+    #recur-dealer .status { background: light-dark(#e3f5e9, #173c29); color: var(--d-green); border-radius: 11px; padding: 10px 13px; display: flex; gap: 8px; align-items: center; font-size: 12px; font-weight: 600; white-space: nowrap; }
+    #recur-dealer .status svg { width: 18px; height: 18px; stroke-width: 3; }
+    #recur-dealer .summary-grid { display: grid; grid-template-columns: 1.25fr .75fr; gap: 14px; margin-top: 14px; }
+    #recur-dealer .surface { background: var(--d-card); border: 1px solid var(--d-line); border-radius: 14px; padding: 19px; }
+    #recur-dealer .agreement-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 9px; }
+    #recur-dealer .fact { background: var(--d-soft); border-radius: 10px; padding: 13px; min-width: 0; }
+    #recur-dealer .fact span { display: block; color: var(--d-sub); font-size: 11px; margin-bottom: 5px; }
+    #recur-dealer .fact strong { font-size: 15px; font-weight: 600; line-height: 1.18; display: block; }
+    #recur-dealer .lifecycle { margin-top: 17px; }
+    #recur-dealer .track { height: 7px; background: var(--d-soft); border-radius: 99px; position: relative; margin: 37px 18px 35px; }
+    #recur-dealer .track-fill { position: absolute; inset: 0 auto 0 0; width: 43%; background: var(--d-pink); border-radius: 99px; }
+    #recur-dealer .milestone { position: absolute; top: 50%; transform: translate(-50%,-50%); width: 17px; height: 17px; border-radius: 50%; background: var(--d-card); box-shadow: 0 0 0 5px var(--d-soft); }
+    #recur-dealer .milestone.done { background: var(--d-pink); box-shadow: 0 0 0 5px color-mix(in srgb, var(--d-pink) 30%, transparent); }
+    #recur-dealer .milestone span { position: absolute; width: 120px; left: 50%; transform: translateX(-50%); text-align: center; font-size: 10px; color: var(--d-sub); top: 20px; }
+    #recur-dealer .milestone.top span { top: auto; bottom: 21px; }
+    #recur-dealer .privacy { display: grid; grid-template-columns: 38px 1fr; gap: 10px; align-items: start; background: var(--d-soft); padding: 13px; border-radius: 13px; }
+    #recur-dealer .privacy .lock { width: 38px; height: 38px; border-radius: 11px; background: var(--d-card); display: grid; place-items: center; color: var(--d-sub); }
+    #recur-dealer .privacy svg { width: 19px; height: 19px; }
+    #recur-dealer .privacy strong { font-size: 12px; font-weight: 600; display: block; }
+    #recur-dealer .privacy small { color: var(--d-sub); font-size: 11px; line-height: 1.4; display: block; margin-top: 3px; }
+    #recur-dealer .actions { margin-top: 13px; display: flex; gap: 8px; flex-wrap: wrap; }
+    #recur-dealer .action { border: 0; background: var(--d-ink); color: var(--d-shell); border-radius: 10px; padding: 11px 14px; font-weight: 600; }
+    #recur-dealer .action.secondary { background: var(--d-soft); color: var(--d-ink); }
+    #recur-dealer .section-row { display: flex; align-items: end; justify-content: space-between; gap: 12px; margin: 21px 0 10px; }
+    #recur-dealer .section-row h2 { margin: 0; }
+    #recur-dealer .section-row small { color: var(--d-sub); font-size: 11px; }
+    #recur-dealer .event { display: grid; grid-template-columns: 38px 1fr auto; gap: 11px; align-items: start; padding: 13px 0; border-top: 1px solid var(--d-line); }
+    #recur-dealer .event:first-of-type { border-top: 0; }
+    #recur-dealer .event-icon { width: 36px; height: 36px; border-radius: 11px; background: var(--d-soft); color: var(--d-green); display: grid; place-items: center; }
+    #recur-dealer .event-icon svg { width: 18px; height: 18px; }
+    #recur-dealer .event strong { display: block; font-size: 13px; font-weight: 600; }
+    #recur-dealer .event small { display: block; color: var(--d-sub); font-size: 11px; margin-top: 3px; }
+    #recur-dealer .tag { min-width: 86px; display: inline-flex; align-items: center; justify-content: center; gap: 7px; padding: 8px 10px; border-radius: 11px; background: var(--d-soft); color: var(--d-ink); font-size: 11px; font-weight: 600; line-height: 1; white-space: nowrap; }
+    #recur-dealer .tag::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: currentColor; flex: 0 0 auto; }
+    #recur-dealer .tag-positive { background: light-dark(#dff5e8, #173c29); color: var(--d-green); }
+    #recur-dealer .tag-soon { background: light-dark(#fff0d7, #47331a); color: var(--d-amber); }
+    #recur-dealer .tag-pink { background: color-mix(in srgb, var(--d-pink) 42%, var(--d-card)); color: var(--d-ink); }
+    #recur-dealer .tag-dark { background: var(--d-ink); color: var(--d-shell); }
+    #recur-dealer .workspace-grid { display: grid; grid-template-columns: .85fr 1.15fr; gap: 14px; }
+    #recur-dealer .appointment button { width: 100%; background: transparent; color: var(--d-ink); border: 0; border-top: 1px solid var(--d-line); padding: 14px 0; display: flex; justify-content: space-between; text-align: left; }
+    #recur-dealer .appointment button:first-of-type { border-top: 0; }
+    #recur-dealer .appointment strong { font-size: 13px; font-weight: 600; }
+    #recur-dealer .appointment small { color: var(--d-sub); display: block; margin-top: 3px; font-size: 11px; }
+    #recur-dealer .field { margin: 13px 0; }
+    #recur-dealer .field label { display: block; color: var(--d-sub); font-size: 11px; margin-bottom: 6px; }
+    #recur-dealer .field input, #recur-dealer .field select, #recur-dealer .field textarea { width: 100%; border: 1px solid var(--d-line); background: var(--d-soft); color: var(--d-ink); border-radius: 11px; padding: 11px; }
+    #recur-dealer .field textarea { min-height: 82px; resize: vertical; }
+    #recur-dealer .empty { color: var(--d-sub); padding: 70px 20px; text-align: center; }
+    @media (max-width: 780px) {
+      #recur-dealer .app { grid-template-columns: 1fr; }
+      #recur-dealer .sidebar { border-right: 0; border-bottom: 1px solid var(--d-line); padding: 16px; gap: 14px; }
+      #recur-dealer .nav { grid-template-columns: repeat(4,1fr); }
+      #recur-dealer .nav button { display: flex; flex-direction: column; justify-content: center; gap: 4px; min-height: 80px; padding: 6px 3px; text-align: center; }
+      #recur-dealer .nav-icon { width: 35px; height: 35px; }
+      #recur-dealer .dealer-id, #recur-dealer .dealer-label { display: none; }
+      #recur-dealer .main { padding: 20px 14px 30px; }
+      #recur-dealer .topbar { align-items: flex-start; flex-direction: column; }
+      #recur-dealer .search { width: 100%; }
+      #recur-dealer .summary-grid, #recur-dealer .workspace-grid { grid-template-columns: 1fr; }
+      #recur-dealer .agreement-grid { grid-template-columns: 1fr 1fr; }
+      #recur-dealer .vehicle { align-items: flex-start; }
+      #recur-dealer .status { white-space: normal; }
+    }
+    @media (max-width: 430px) {
+      #recur-dealer .nav strong { font-size: 11px; }
+      #recur-dealer .agreement-grid { grid-template-columns: 1fr; }
+      #recur-dealer .vehicle { flex-direction: column; }
+    }
+  </style>
+  <section class="app">
+    <aside class="sidebar">
+      <div><div class="brand" aria-label="Recur"><span class="brand-r" aria-hidden="true">R</span>ECUR</div><div class="dealer-label">Dealer workspace</div></div>
+      <nav class="nav" aria-label="Dealer workspace sections">
+        <button type="button" class="cursor-interaction" data-page="dashboard"><span class="nav-icon"><i data-lucide="layout-dashboard" aria-hidden="true"></i></span><strong>Today</strong></button>
+        <button type="button" class="active cursor-interaction" data-page="agreement"><span class="nav-icon"><i data-lucide="calendar-range" aria-hidden="true"></i></span><strong>Agreements</strong></button>
+        <button type="button" class="cursor-interaction" data-page="service"><span class="nav-icon"><i data-lucide="wrench" aria-hidden="true"></i></span><strong>Service</strong></button>
+        <button type="button" class="cursor-interaction" data-page="returns"><span class="nav-icon"><i data-lucide="refresh-cw" aria-hidden="true"></i></span><strong>Return &amp; renew</strong></button>
+      </nav>
+      <div class="dealer-id"><strong>Service De Velo, Botley</strong><small>Authorised dealer · SDV-014</small></div>
+    </aside>
+    <main class="main">
+      <header class="topbar">
+        <div><div class="eyebrow" id="dealer-eyebrow">Agreement visibility</div><h1 id="dealer-title">3T RaceMax Project X</h1></div>
+        <label class="search"><span class="sr-only">Find bike, frame or customer</span><i data-lucide="search" aria-hidden="true"></i><input placeholder="Find bike, frame or customer"></label>
+      </header>
+
+      <section class="panel active" data-panel="agreement">
+        <div class="vehicle"><div class="vehicle-info"><img class="bike-photo" src="assets/3t-racemax-project-x.png" alt="3T RaceMax Project X gravel bike"><div><h2>3T RaceMax Project X</h2><small>Frame 3T-RMX-…-4819 · Rented by Alex P.</small></div></div><div class="status"><i data-lucide="check-circle-2" aria-hidden="true"></i>Agreement active</div></div>
+        <div class="summary-grid">
+          <article class="surface">
+            <h2>Rental agreement</h2>
+            <div class="agreement-grid"><div class="fact"><span>Rental started</span><strong>18 Nov 2025</strong></div><div class="fact"><span>Current term ends</span><strong>18 Nov 2027</strong></div><div class="fact"><span>Return / renew window</span><strong>18 Aug–18 Nov 2027</strong></div><div class="fact"><span>Customer choice</span><strong>Not selected</strong></div><div class="fact"><span>Service eligibility</span><strong>Authorised</strong></div><div class="fact"><span>Return location</span><strong>Service De Velo, Botley</strong></div></div>
+            <div class="lifecycle"><div class="track"><div class="track-fill"></div><div class="milestone done top" style="left:0%"><span>Rent<br>18 Nov 2025</span></div><div class="milestone top" style="left:74%"><span>Choice opens<br>18 Aug 2027</span></div><div class="milestone" style="left:100%"><span>Return / renew<br>18 Nov 2027</span></div></div></div>
+            <div class="actions"><button type="button" class="action cursor-interaction">Contact customer</button><button type="button" class="action secondary cursor-interaction" data-go="service">Open Bike Record</button></div>
+          </article>
+          <aside class="surface"><h2>Next action</h2><div class="event"><div class="event-icon"><i data-lucide="calendar-clock" aria-hidden="true"></i></div><div><strong>Annual service due</strong><small>Book by 18 October 2026</small></div><span class="tag">24 days</span></div><button type="button" class="action cursor-interaction" data-go="service">Start service</button></aside>
+        </div>
+        <div class="section-row"><h2>Recent Bike Record</h2><small>Append-only, attributed service history</small></div>
+        <article class="surface"><div class="event"><div class="event-icon"><i data-lucide="badge-check" aria-hidden="true"></i></div><div><strong>Safety inspection completed</strong><small>Service De Velo, Botley · Technician JP · 22 Mar 2026</small></div><span class="tag">Verified</span></div><div class="event"><div class="event-icon"><i data-lucide="key-round" aria-hidden="true"></i></div><div><strong>Rental started</strong><small>Bike handed to Alex P. · 18 Nov 2025</small></div><span class="tag">Verified</span></div><div class="event"><div class="event-icon"><i data-lucide="clipboard-check" aria-hidden="true"></i></div><div><strong>Pre-rental inspection</strong><small>Original specification confirmed · 17 Nov 2025</small></div><span class="tag">Verified</span></div></article>
+      </section>
+
+      <section class="panel" data-panel="dashboard"><div class="workspace-grid"><article class="surface appointment"><h2>Today’s appointments</h2><button type="button" data-go="agreement"><span><strong>3T RaceMax Project X</strong><small>Alex P. · Annual service · 09:30</small></span><span class="tag tag-positive">Checked in</span></button><button type="button"><span><strong>Cannondale Mavaro Neo</strong><small>Jamie R. · Safety inspection · 11:00</small></span><span class="tag tag-soon">Due soon</span></button><button type="button"><span><strong>Trek Allant+ 7</strong><small>Sam K. · Return assessment · 14:30</small></span><span class="tag tag-pink">Scheduled</span></button></article><article class="surface"><h2>Work requiring attention</h2><div class="event"><div class="event-icon"><i data-lucide="refresh-cw" aria-hidden="true"></i></div><div><strong>3 return / renew windows open</strong><small>Customers can now choose their next step</small></div><span class="tag tag-dark">Review</span></div><div class="event"><div class="event-icon"><i data-lucide="wrench" aria-hidden="true"></i></div><div><strong>5 services due this week</strong><small>All covered by active Recur agreements</small></div><span class="tag tag-pink">Plan</span></div></article></div></section>
+
+      <section class="panel" data-panel="service"><div class="workspace-grid"><article class="surface"><h2>Bike and customer</h2><div class="fact"><span>Bike</span><strong>3T RaceMax Project X</strong></div><div class="fact" style="margin-top:9px"><span>Customer</span><strong>Alex P.</strong></div><div class="fact" style="margin-top:9px"><span>Agreement status</span><strong>Active · service authorised</strong></div><div class="privacy" style="margin-top:13px"><div class="lock"><i data-lucide="lock" aria-hidden="true"></i></div><div><strong>Minimum necessary access</strong><small>No consumer payment or financial information is available in this workspace.</small></div></div></article><article class="surface"><h2>Add service event</h2><div class="field"><label>Service outcome</label><select><option>Completed—no issues</option><option>Completed—follow-up required</option><option>Unable to complete</option></select></div><div class="field"><label>Work completed</label><textarea>Annual service; drivetrain checked; brake pads replaced</textarea></div><div class="field"><label>Evidence reference</label><input value="JP-240926-0930"></div><button type="button" class="action cursor-interaction">Review and sign record</button></article></div></section>
+
+      <section class="panel" data-panel="returns"><div class="workspace-grid"><article class="surface"><h2>Return / renew queue</h2><div class="event"><div class="event-icon"><i data-lucide="bike" aria-hidden="true"></i></div><div><strong>3T RaceMax Project X</strong><small>Choice opens 18 Aug 2027 · Alex P.</small></div><span class="tag">Upcoming</span></div><div class="event"><div class="event-icon"><i data-lucide="bike" aria-hidden="true"></i></div><div><strong>Trek Allant+ 7</strong><small>Return booked 28 Sep 2026 · Sam K.</small></div><span class="tag">Booked</span></div></article><article class="surface"><h2>Prepare the next step</h2><div class="privacy"><div class="lock"><i data-lucide="info" aria-hidden="true"></i></div><div><strong>Customer decision controls the workflow</strong><small>The dealer can support return or renewal, but cannot select an option on the customer’s behalf.</small></div></div></article></div></section>
+    </main>
+  </section>
+  <script>
+    (() => {
+      const root = document.getElementById('recur-dealer');
+      const nav = [...root.querySelectorAll('[data-page]')];
+      const panels = [...root.querySelectorAll('[data-panel]')];
+      const title = root.querySelector('#dealer-title');
+      const eyebrow = root.querySelector('#dealer-eyebrow');
+      const saved = window.openai && window.openai.widgetState && window.openai.widgetState.modelContent;
+      const state = { page: saved?.page || 'agreement', accent: '#f4a7c0', radius: 24 };
+      const copy = { dashboard: ['Today at Service De Velo, Botley','Dealer workspace'], agreement: ['3T RaceMax Project X','Agreement visibility'], service: ['Update Bike Record','Authorised service'], returns: ['Return & renew','Lifecycle workspace'] };
+      function show(page) {
+        state.page = page;
+        panels.forEach(p => p.classList.toggle('active', p.dataset.panel === page));
+        nav.forEach(b => b.classList.toggle('active', b.dataset.page === page));
+        title.textContent = copy[page][0]; eyebrow.textContent = copy[page][1];
+        window.openai?.setWidgetState?.({ modelContent: { page }, privateContent: null }).catch(() => {});
+      }
+      nav.forEach(b => b.addEventListener('click', () => show(b.dataset.page)));
+      root.querySelectorAll('[data-go]').forEach(b => b.addEventListener('click', () => show(b.dataset.go)));
+      show(state.page);
+      if (globalThis.Tweak) {
+        const tweak = new Tweak({ container: root.querySelector('.app'), onChange: () => { root.style.setProperty('--d-pink', state.accent); root.querySelector('.app').style.borderRadius = `${state.radius}px`; } });
+        tweak.addColorPicker(state, 'accent', { label: 'Recur pink', reference: '--d-pink' });
+        tweak.addSlider(state, 'radius', { label: 'Workspace corner radius', min: 8, max: 32, unit: 'px', reference: 'shell.radius' });
+      }
+    })();
+  </script>
+</div>
+
+<script>if(globalThis.lucide)lucide.createIcons({attrs:{width:20,height:20}});</script>
+</body>
+</html>

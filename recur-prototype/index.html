@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Recur product prototype</title>
+  <style>
+    :root { color-scheme: light; font-family: "Arial Rounded MT Bold", "Avenir Next", Arial, sans-serif; background:#fff0f6; color:#100820; }
+    * { box-sizing:border-box; }
+    body { margin:0; min-height:100vh; display:grid; place-items:center; padding:28px; }
+    main { width:min(900px,100%); }
+    .logo { font-size:30px; font-weight:800; letter-spacing:-1.8px; }
+    .logo span { display:inline-block; transform:scaleX(-1); margin-right:1px; }
+    h1 { font-size:clamp(42px,8vw,82px); line-height:.96; letter-spacing:-4px; margin:46px 0 16px; max-width:800px; }
+    p { font:500 19px/1.5 Arial,sans-serif; color:#685e68; max-width:620px; }
+    .choices { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:18px; margin-top:42px; }
+    a { color:#100820; text-decoration:none; background:#fff; border-radius:24px; padding:28px; min-height:210px; display:flex; flex-direction:column; justify-content:space-between; transition:transform .18s ease; }
+    a:first-child { background:#f4a7c0; }
+    a:hover { transform:translateY(-4px); }
+    a strong { font-size:29px; letter-spacing:-1.2px; }
+    a span { font:500 15px/1.45 Arial,sans-serif; max-width:300px; }
+    a b { font-size:30px; align-self:flex-end; }
+    footer { margin-top:28px; font:500 12px Arial,sans-serif; color:#857982; }
+    @media (max-width:620px) { .choices { grid-template-columns:1fr; } h1 { letter-spacing:-2px; } }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="logo" aria-label="Recur"><span aria-hidden="true">R</span>ECUR</div>
+    <h1>Rent. Return.<br>Renew.</h1>
+    <p>Explore how Recur brings the rental agreement and the bike’s trusted service journey together—for riders and authorised dealers.</p>
+    <div class="choices">
+      <a href="consumer.html"><strong>Consumer app</strong><span>Manage the rental agreement, bike care, Bike Record and return or renewal.</span><b aria-hidden="true">→</b></a>
+      <a href="dealer.html"><strong>Dealer workspace</strong><span>View lifecycle dates, manage servicing and update the bike’s verified history.</span><b aria-hidden="true">→</b></a>
+    </div>
+    <footer>Interactive product concept · Sample data only</footer>
+  </main>
+</body>
+</html>
