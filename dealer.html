@@ -31,6 +31,9 @@
     #recur-dealer .brand { font-size: 28px; letter-spacing: -1.6px; font-weight: 600; line-height: 1; }
     #recur-dealer .brand-r { display: inline-block; transform: scaleX(-1); margin-right: 1px; }
     #recur-dealer .dealer-label { color: var(--d-sub); font-size: 11px; letter-spacing: 1.4px; text-transform: uppercase; margin-top: 8px; }
+    #recur-dealer .back-link { display: inline-flex; align-items: center; gap: 7px; width: fit-content; color: var(--d-sub); text-decoration: none; font-size: 12px; font-weight: 500; padding: 8px 9px; margin: -4px 0 0 -2px; border-radius: 9px; }
+    #recur-dealer .back-link:hover { background: var(--d-soft); color: var(--d-ink); }
+    #recur-dealer .back-link svg { width: 16px; height: 16px; }
     #recur-dealer .nav { display: grid; gap: 8px; }
     #recur-dealer .nav button { border: 0; background: transparent; color: var(--d-sub); min-height: 54px; border-radius: 12px; padding: 8px 10px; display: grid; grid-template-columns: 36px 1fr; align-items: center; gap: 10px; text-align: left; }
     #recur-dealer .nav button.active { background: color-mix(in srgb, var(--d-pink) 34%, var(--d-card)); color: var(--d-ink); }
@@ -128,6 +131,7 @@
   <section class="app">
     <aside class="sidebar">
       <div><div class="brand" aria-label="Recur"><span class="brand-r" aria-hidden="true">R</span>ECUR</div><div class="dealer-label">Dealer workspace</div></div>
+      <a class="back-link" href="index.html"><i data-lucide="arrow-left" aria-hidden="true"></i>All prototypes</a>
       <nav class="nav" aria-label="Dealer workspace sections">
         <button type="button" class="cursor-interaction" data-page="dashboard"><span class="nav-icon"><i data-lucide="layout-dashboard" aria-hidden="true"></i></span><strong>Today</strong></button>
         <button type="button" class="active cursor-interaction" data-page="agreement"><span class="nav-icon"><i data-lucide="calendar-range" aria-hidden="true"></i></span><strong>Agreements</strong></button>
