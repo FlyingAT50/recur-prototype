@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>Recur consumer prototype</title>
+  <style>html,body{margin:0;background:#fff}body{padding:16px;box-sizing:border-box}</style>
+  <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
+</head>
+<body>
+<div id="recur-concept" aria-label="Interactive Recur application concept">
+  <style>
+    #recur-concept {
+      --r-ink: light-dark(#111111, #f7f7f7);
+      --r-sub: light-dark(#666666, #b8b8b8);
+      --r-bg: light-dark(#ffffff, #171717);
+      --r-shell: light-dark(#ffffff, #171717);
+      --r-card: light-dark(#ffffff, #212121);
+      --r-line: light-dark(#e6e6e6, #363636);
+      --r-accent: #f4a7c0;
+      --r-accent-ink: #100820;
+      --r-good: light-dark(#187c4d, #75d7a5);
+      --r-soft: light-dark(#f7f7f7, #292929);
+      color: var(--r-ink);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, sans-serif;
+      font-weight: 400;
+      background: transparent;
+      width: 100%;
+    }
+    #recur-concept * { box-sizing: border-box; }
+    #recur-concept button { font: inherit; }
+    #recur-concept .window { background: var(--r-bg); border: 1px solid var(--r-line); border-radius: 20px; overflow: hidden; min-height: 680px; display: grid; grid-template-columns: 220px 1fr; }
+    #recur-concept .rail { background: var(--r-shell); padding: 24px 18px; border-right: 1px solid var(--r-line); display: flex; flex-direction: column; gap: 24px; }
+    #recur-concept .brand { color: var(--r-ink); font-size: 29px; letter-spacing: -1.6px; font-weight: 600; line-height: 1; }
+    #recur-concept .brand .recur-r { display: inline-block; transform: scaleX(-1); margin-right: 1px; }
+    #recur-concept .nav { display: grid; gap: 9px; }
+    #recur-concept .nav button { display: grid; grid-template-columns: 42px 1fr; align-items: center; gap: 12px; min-height: 64px; padding: 10px 12px; border: 0; background: transparent; color: var(--r-sub); border-radius: 12px; text-align: left; }
+    #recur-concept .nav button.active { background: color-mix(in srgb, var(--r-accent) 34%, var(--r-card)); color: var(--r-ink); }
+    #recur-concept .nav-icon { width: 42px; height: 42px; border-radius: 11px; display: grid; place-items: center; background: var(--r-soft); color: var(--r-ink); }
+    #recur-concept .nav button.active .nav-icon { background: var(--r-accent); color: #111111; }
+    #recur-concept .nav svg { width: 23px; height: 23px; stroke-width: 2.4; }
+    #recur-concept .nav-title { display: block; font-size: 15px; font-weight: 600; letter-spacing: -.2px; }
+    #recur-concept .nav-caption { display: block; font-size: 11px; font-weight: 400; opacity: .72; margin-top: 2px; }
+    #recur-concept .rail-note { margin-top: auto; color: var(--r-sub); font-size: 12px; line-height: 1.45; }
+    #recur-concept .main { padding: 28px 32px 38px; overflow: hidden; }
+    #recur-concept .topline { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-bottom: 24px; }
+    #recur-concept .eyebrow { color: var(--r-sub); font-size: 13px; margin-bottom: 4px; }
+    #recur-concept h1 { margin: 0; font-size: 29px; line-height: 1.12; letter-spacing: -1px; font-weight: 600; }
+    #recur-concept .avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--r-card); display: grid; place-items: center; border: 1px solid var(--r-line); font-weight: 500; }
+    #recur-concept .view { display: none; }
+    #recur-concept .view.active { display: block; }
+    #recur-concept .hero { background: var(--r-accent); color: var(--r-accent-ink); border-radius: 22px; padding: 26px; display: grid; grid-template-columns: 1.2fr .8fr; gap: 20px; min-height: 216px; }
+    #recur-concept .hero .muted { color: color-mix(in srgb, var(--r-accent-ink) 68%, transparent); }
+    #recur-concept .bike-art { display: grid; place-items: center; }
+    #recur-concept .bike-art img { width: 100%; max-width: 330px; height: 172px; object-fit: contain; }
+    #recur-concept .amount { font-size: 40px; line-height: 1; letter-spacing: -2px; margin: 14px 0 7px; font-weight: 600; }
+    #recur-concept .status { display: inline-grid; grid-template-columns: 34px 1fr; align-items: center; gap: 10px; color: var(--r-ink); background: light-dark(#fff7fb, #35212b); border-radius: 14px; padding: 9px 13px 9px 9px; text-align: left; }
+    #recur-concept .status-icon { width: 34px; height: 34px; display: grid; place-items: center; border-radius: 10px; background: light-dark(#dff5e8, #183c2a); color: var(--r-good); }
+    #recur-concept .status-icon svg { width: 20px; height: 20px; stroke-width: 3; }
+    #recur-concept .status strong { display: block; font-size: 13px; font-weight: 600; }
+    #recur-concept .status small { display: block; color: var(--r-sub); font-size: 11px; margin-top: 1px; }
+    #recur-concept .agreement-status { margin-top: 5px; }
+    #recur-concept .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 14px; }
+    #recur-concept .card { background: var(--r-card); border: 1px solid var(--r-line); border-radius: 14px; padding: 18px; min-width: 0; }
+    #recur-concept .card h2 { font-size: 15px; font-weight: 600; margin: 0 0 15px; }
+    #recur-concept .label { color: var(--r-sub); font-size: 12px; }
+    #recur-concept .value { font-size: 22px; letter-spacing: -.6px; margin-top: 5px; font-weight: 600; }
+    #recur-concept .progress { height: 8px; border-radius: 99px; background: var(--r-soft); margin: 16px 0 9px; overflow: hidden; }
+    #recur-concept .progress span { display: block; height: 100%; background: var(--r-accent); width: 36%; border-radius: inherit; }
+    #recur-concept .action { border: 0; background: var(--r-accent); color: var(--r-accent-ink); border-radius: 10px; padding: 11px 15px; font-weight: 600; margin-top: 16px; }
+    #recur-concept .hero .action { background: var(--r-accent-ink); color: #fff7fb; }
+    #recur-concept .secondary { background: var(--r-soft); color: var(--r-ink); margin-left: 7px; }
+    #recur-concept .event { display: grid; grid-template-columns: 36px 1fr auto; gap: 10px; align-items: start; padding: 13px 0; border-top: 1px solid var(--r-line); }
+    #recur-concept .event:first-of-type { border-top: 0; }
+    #recur-concept .event-icon { width: 32px; height: 32px; background: var(--r-soft); border-radius: 10px; display: grid; place-items: center; color: var(--r-good); }
+    #recur-concept .event strong { display: block; font-size: 14px; font-weight: 600; }
+    #recur-concept .event small { color: var(--r-sub); font-size: 12px; }
+    #recur-concept .verified { color: var(--r-good); font-size: 11px; padding-top: 2px; }
+    #recur-concept .finance-layout, #recur-concept .record-layout { display: grid; grid-template-columns: 1.1fr .9fr; gap: 14px; }
+    #recur-concept .loan-panel { text-align: center; padding: 30px 24px; }
+    #recur-concept .loan-panel .amount { color: var(--r-ink); }
+    #recur-concept .timeline-row { display: flex; justify-content: space-between; padding: 14px 0; border-top: 1px solid var(--r-line); }
+    #recur-concept .bike-header { display: flex; gap: 16px; align-items: center; margin-bottom: 16px; }
+    #recur-concept .bike-thumb { width: 122px; height: 78px; background: var(--r-soft); border-radius: 12px; display: grid; place-items: center; padding: 5px; overflow: hidden; }
+    #recur-concept .bike-thumb img { width: 100%; height: 100%; object-fit: contain; }
+    #recur-concept .trust { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+    #recur-concept .chip { background: var(--r-soft); color: var(--r-sub); padding: 7px 9px; border-radius: 8px; font-size: 11px; }
+    #recur-concept .form-field { margin: 15px 0; }
+    #recur-concept .form-field label { display: block; font-size: 12px; color: var(--r-sub); margin-bottom: 6px; }
+    #recur-concept .form-field input, #recur-concept .form-field select { width: 100%; background: var(--r-soft); color: var(--r-ink); border: 0; border-radius: 11px; padding: 12px; font: inherit; }
+    #recur-concept .notice { background: color-mix(in srgb, var(--r-accent) 18%, var(--r-card)); padding: 13px; border-radius: 12px; font-size: 12px; line-height: 1.45; }
+    @media (max-width: 760px) {
+      #recur-concept .window { grid-template-columns: 1fr; border-radius: 20px; }
+      #recur-concept .rail { padding: 15px; border-right: 0; border-bottom: 1px solid var(--r-line); gap: 12px; }
+      #recur-concept .brand { font-size: 22px; }
+      #recur-concept .nav { grid-template-columns: repeat(4, 1fr); gap: 7px; }
+      #recur-concept .nav button { display: flex; justify-content: center; align-items: center; min-height: 94px; padding: 9px 4px; gap: 7px; flex-direction: column; border-radius: 16px; text-align: center; }
+      #recur-concept .nav-icon { width: 43px; height: 43px; border-radius: 14px; }
+      #recur-concept .nav svg { width: 24px; height: 24px; }
+      #recur-concept .nav-title { font-size: 13px; line-height: 1.05; }
+      #recur-concept .nav-caption { display: none; }
+      #recur-concept .rail-note { display: none; }
+      #recur-concept .main { padding: 20px 15px 28px; }
+      #recur-concept .hero, #recur-concept .finance-layout, #recur-concept .record-layout { grid-template-columns: 1fr; }
+      #recur-concept .hero { min-height: 0; }
+      #recur-concept .bike-art { display: none; }
+      #recur-concept .grid { grid-template-columns: 1fr; }
+    }
+  </style>
+  <section class="window">
+    <aside class="rail">
+      <div class="brand" aria-label="Recur"><span class="recur-r" aria-hidden="true">R</span>ECUR</div>
+      <nav class="nav" aria-label="Recur sections">
+        <button type="button" class="active cursor-interaction" data-view="home"><span class="nav-icon"><i data-lucide="house" aria-hidden="true"></i></span><span><span class="nav-title">Home</span><span class="nav-caption">Your rental today</span></span></button>
+        <button type="button" class="cursor-interaction" data-view="agreement"><span class="nav-icon"><i data-lucide="wallet-cards" aria-hidden="true"></i></span><span><span class="nav-title">Agreement</span><span class="nav-caption">Your rental &amp; payments</span></span></button>
+        <button type="button" class="cursor-interaction" data-view="record"><span class="nav-icon"><i data-lucide="bike" aria-hidden="true"></i></span><span><span class="nav-title">Bike record</span><span class="nav-caption">Service &amp; history</span></span></button>
+        <button type="button" class="cursor-interaction" data-view="support"><span class="nav-icon"><i data-lucide="message-circle" aria-hidden="true"></i></span><span><span class="nav-title">Support</span><span class="nav-caption">Help when needed</span></span></button>
+      </nav>
+      <div class="rail-note">Rent. Return. Renew.<br>One account for the agreement and the bike’s trusted journey.</div>
+    </aside>
+    <main class="main">
+      <header class="topline">
+        <div><div class="eyebrow" id="context-label">Rent. Return. Renew.</div><h1 id="page-title">Good morning, Alex</h1></div>
+        <div class="avatar" aria-label="Alex profile">AP</div>
+      </header>
+
+      <section class="view active" data-panel="home">
+        <div class="hero">
+          <div>
+            <div class="muted">Your bike</div>
+            <h1>3T RaceMax Project X</h1>
+            <div class="amount">£166 <span style="font-size:16px;letter-spacing:0">/ month</span></div>
+            <div class="status"><span class="status-icon"><i data-lucide="check" aria-hidden="true"></i></span><span><strong>Everything’s on track</strong><small>Payments and servicing are up to date</small></span></div>
+            <button class="action cursor-interaction" data-jump="agreement">View agreement</button>
+          </div>
+          <div class="bike-art"><img src="assets/3t-racemax-project-x.png" alt="3T RaceMax Project X gravel bike"></div>
+        </div>
+        <div class="grid">
+          <article class="card"><h2>Agreement</h2><div class="label">Paid so far</div><div class="value">36%</div><div class="progress" aria-label="36 percent paid"><span></span></div><div class="label">Next payment £166 · 18 Oct</div></article>
+          <article class="card"><h2>Bike care</h2><div class="label">Next authorised service</div><div class="value">In 24 days</div><button class="action cursor-interaction" data-jump="record">Book service</button></article>
+          <article class="card"><h2>Return or renew</h2><div class="label">Your choice opens</div><div class="value">May 2028</div><div class="label" style="margin-top:12px">Return this bike or renew with your next one—with its Bike Record ready.</div></article>
+        </div>
+      </section>
+
+      <section class="view" data-panel="agreement">
+        <div class="finance-layout">
+          <article class="card loan-panel">
+            <div class="label">Remaining balance</div><div class="amount">£6,239.33</div><div class="label">Figures supplied by your finance provider</div>
+            <div class="progress" aria-label="36 percent paid"><span></span></div><div class="status agreement-status"><span class="status-icon"><i data-lucide="check" aria-hidden="true"></i></span><span><strong>36% paid · on track</strong><small>Next payment scheduled</small></span></div><br>
+            <button class="action cursor-interaction">Make an extra payment</button><button class="action secondary cursor-interaction">Get a settlement quote</button>
+          </article>
+          <article class="card"><h2>Payment plan</h2><div class="timeline-row"><span><strong>18 Oct 2026</strong><br><small class="label">Next payment</small></span><strong>£166.00</strong></div><div class="timeline-row"><span><strong>18 Nov 2026</strong><br><small class="label">Scheduled</small></span><strong>£166.00</strong></div><div class="timeline-row"><span><strong>Nov 2029</strong><br><small class="label">Expected final payment</small></span><strong>Finish</strong></div><div class="notice">Payment changes and settlement values are confirmed by the regulated finance provider before you commit.</div></article>
+        </div>
+      </section>
+
+      <section class="view" data-panel="record">
+        <div class="record-layout">
+          <article class="card"><div class="bike-header"><div class="bike-thumb"><img src="assets/3t-racemax-project-x.png" alt="3T RaceMax Project X gravel bike"></div><div><h2 style="margin-bottom:4px">3T RaceMax Project X</h2><div class="label">Frame ending 19 · Recur verified</div><div class="trust"><span class="chip">Original specification</span><span class="chip">2 services</span><span class="chip">No unresolved issues</span></div></div></div><button class="action cursor-interaction">Book authorised service</button></article>
+          <article class="card"><h2>Bike journey</h2><div class="event"><div class="event-icon"><i data-lucide="badge-check" aria-hidden="true"></i></div><div><strong>Annual service completed</strong><small>Recur Bristol · 22 Sep 2026</small></div><span class="verified">Verified</span></div><div class="event"><div class="event-icon"><i data-lucide="wrench" aria-hidden="true"></i></div><div><strong>Brake pads replaced</strong><small>Parts and technician record attached</small></div><span class="verified">Verified</span></div><div class="event"><div class="event-icon"><i data-lucide="key-round" aria-hidden="true"></i></div><div><strong>Rental started</strong><small>Bike handed to Alex · 18 Nov 2025</small></div><span class="verified">Verified</span></div></article>
+        </div>
+      </section>
+
+      <section class="view" data-panel="support"><article class="card"><h2>How can we help?</h2><div class="event"><div class="event-icon"><i data-lucide="credit-card" aria-hidden="true"></i></div><div><strong>Your rental and payments</strong><small>Balance, payment dates, settlement and hardship support</small></div></div><div class="event"><div class="event-icon"><i data-lucide="bike" aria-hidden="true"></i></div><div><strong>Your bike and servicing</strong><small>Book a service, report an issue or query a record</small></div></div><div class="event"><div class="event-icon"><i data-lucide="refresh-cw" aria-hidden="true"></i></div><div><strong>Rent, return or renew</strong><small>Understand every stage of your Recur journey</small></div></div></article></section>
+
+    </main>
+  </section>
+  <script>
+    (() => {
+      const root = document.getElementById('recur-concept');
+      const title = root.querySelector('#page-title');
+      const context = root.querySelector('#context-label');
+      const navButtons = [...root.querySelectorAll('[data-view]')];
+      const panels = [...root.querySelectorAll('[data-panel]')];
+      const saved = window.openai && window.openai.widgetState && window.openai.widgetState.modelContent;
+      let state = { view: saved?.view === 'dealer' ? 'home' : (saved?.view || 'home'), accent: '#f4a7c0', radius: 24 };
+      function show(view) {
+        state.view = view;
+        panels.forEach(p => p.classList.toggle('active', p.dataset.panel === view));
+        navButtons.forEach(b => b.classList.toggle('active', b.dataset.view === view));
+        const names = { home: 'Good morning, Alex', agreement: 'Your rental agreement', record: 'Your bike record', support: 'Support when you need it' };
+        title.textContent = names[view];
+        context.textContent = 'Rent. Return. Renew.';
+        if (window.openai?.setWidgetState) window.openai.setWidgetState({ modelContent: { view: state.view }, privateContent: null }).catch(() => {});
+      }
+      navButtons.forEach(b => b.addEventListener('click', () => show(b.dataset.view)));
+      root.querySelectorAll('[data-jump]').forEach(b => b.addEventListener('click', () => show(b.dataset.jump)));
+      show(state.view);
+      if (globalThis.Tweak) {
+        const tweak = new Tweak({ container: root.querySelector('.window'), onChange: () => { root.style.setProperty('--r-accent', state.accent); root.querySelector('.window').style.borderRadius = `${state.radius}px`; } });
+        tweak.addColorPicker(state, 'accent', { label: 'Recur accent', reference: '--r-accent' });
+        tweak.addSlider(state, 'radius', { label: 'App corner radius', min: 8, max: 32, unit: 'px', reference: 'shell.radius' });
+      }
+    })();
+  </script>
+</div>
+
+<script>if(globalThis.lucide)lucide.createIcons({attrs:{width:20,height:20}});</script>
+</body>
+</html>
